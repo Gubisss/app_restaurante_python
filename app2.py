@@ -1,4 +1,5 @@
 import requests
+import json
 
 url = 'https://guilhermeonrails.github.io/api-restaurantes/restaurantes.json'
 
@@ -7,7 +8,7 @@ print(response)
 
 if response.status_code == 200:
     dados_json = response.json()
-    dados_restaurante = {}
+    dados_restaurante = []
     for item in dados_json:
         nome_do_restaurante = item['Company']
         if nome_do_restaurante not in dados_restaurante:
@@ -22,3 +23,7 @@ if response.status_code == 200:
 else:
     print('Erro ao acessar a API' ,  response.status_code)
 
+for nome_do_restauante, dados in dados_restaurante.items():
+    nome_do_arquivo = f'{nome_do_restauante}.json'
+    with open(nome_do_arquivo, 'w') as arquivo_restaurante:
+        json.dump(dados, nome_do_arquivo, indent=4)
